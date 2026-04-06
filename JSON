@@ -1,0 +1,5 @@
+{
+  "routes": [
+    { "src": "/org-pulse", "dest": "/org-pulse.html" }
+  ]
+} 
