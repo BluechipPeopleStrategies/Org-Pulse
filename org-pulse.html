@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Org Pulse | BlueChip People Strategies</title>
+  <meta name="description" content="25 questions. 5 minutes. A clear read on your organizational health." />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:#FFFFFF;color:#1A1A1A;font-family:'DM Sans',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+    .screen{display:none;min-height:100vh}.screen.active{display:block}
+    .inner{max-width:580px;margin:0 auto;padding:64px 28px}
+    .top-bar{position:fixed;top:0;left:0;right:0;height:5px;background:#1E3A8A;z-index:100}
+    .eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.4em;color:#1E3A8A;text-transform:uppercase;margin-bottom:14px;font-weight:600}
+    .headline{font-size:clamp(48px,9vw,68px);font-weight:600;line-height:1.0;margin-bottom:10px;color:#1A1A1A;font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:-.02em}
+    .headline .blue{color:#1E3A8A}
+    .blue-rule{width:48px;height:3px;background:#1E3A8A;margin:22px 0}
+    .body-text{font-size:16px;color:#555;line-height:1.8;margin-bottom:32px;font-weight:300;max-width:460px}
+    .card{background:#F5F5F3;border:1px solid #E0DED9;border-radius:14px;padding:24px;margin-bottom:24px}
+    .card-label{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.4em;color:#1E3A8A;text-transform:uppercase;margin-bottom:16px;font-weight:700}
+    .fi{display:flex;gap:12px;margin-bottom:11px;align-items:flex-start}
+    .fd{color:#1E3A8A;font-size:11px;margin-top:4px;flex-shrink:0}
+    .ft{font-size:14px;color:#444;line-height:1.6;font-weight:400}
+    .btn-blue{display:block;width:100%;padding:16px 40px;background:#1E3A8A;color:#FFFFFF;border:none;border-radius:50px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;letter-spacing:.06em;cursor:pointer;transition:background .18s;text-transform:uppercase}
+    .btn-blue:hover{background:#162d6e}.btn-blue:disabled{opacity:.6;cursor:not-allowed}
+    .btn-outline{display:block;width:100%;padding:13px;background:transparent;color:#888;border:1px solid #DDD;border-radius:50px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:12px;letter-spacing:.05em;transition:all .15s;text-transform:uppercase;font-weight:500}
+    .btn-outline:hover{border-color:#1E3A8A;color:#1E3A8A}
+    .meta-text{text-align:center;margin-top:18px;font-size:11px;color:#AAA;font-family:'DM Sans',sans-serif;letter-spacing:.05em}
+    .progress-track{position:fixed;top:0;left:0;right:0;height:5px;background:#E0DED9;z-index:100}
+    .progress-fill{height:5px;background:#1E3A8A;transition:width .4s ease}
+    .assess-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:44px;padding-top:20px}
+    .assess-brand{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.3em;color:#1E3A8A;text-transform:uppercase;font-weight:600}
+    .assess-count{font-size:13px;color:#BBB;font-family:'DM Sans',sans-serif;font-weight:300}
+    .assess-count strong{color:#1A1A1A;font-weight:600}
+    .domain-badge{display:inline-block;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.3em;color:#1E3A8A;background:#EEF1FB;border:1px solid #C8D2F0;border-radius:50px;padding:5px 14px;margin-bottom:22px;text-transform:uppercase;font-weight:600}
+    .question-text{font-size:clamp(20px,3.8vw,25px);font-weight:500;line-height:1.5;color:#1A1A1A;margin-bottom:44px;transition:opacity .22s ease,transform .22s ease;font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:.005em}
+    .question-text.fade-out{opacity:0;transform:translateY(8px)}
+    .options{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+    .option-btn{display:flex;align-items:center;gap:16px;padding:15px 20px;border-radius:12px;cursor:pointer;border:1.5px solid #E8E6E1;background:#FAFAFA;color:#555;font-family:'DM Sans',sans-serif;font-size:14px;transition:all .15s ease;text-align:left;width:100%;font-weight:400}
+    .option-btn:hover{border-color:#1E3A8A;color:#1E3A8A;background:#F0F3FB}
+    .option-btn.selected{border-color:#1E3A8A;background:#EEF1FB;color:#1E3A8A}
+    .radio-circle{width:24px;height:24px;border-radius:50%;flex-shrink:0;border:1.5px solid #CCC;background:#FFF;display:flex;align-items:center;justify-content:center;transition:all .15s ease}
+    .option-btn.selected .radio-circle{border-color:#1E3A8A;background:#1E3A8A}
+    .radio-inner{width:8px;height:8px;border-radius:50%;background:#FFF;display:none}
+    .option-btn.selected .radio-inner{display:block}
+    .option-btn.selected .option-label{font-weight:600;color:#1E3A8A}
+    .back-btn{background:transparent;border:none;color:#AAA;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;letter-spacing:.04em;text-transform:uppercase;font-weight:500}
+    .back-btn:hover{color:#1E3A8A}
+    .input-field{width:100%;background:#FFF;border:1.5px solid #E0DED9;border-radius:10px;padding:14px 18px;color:#1A1A1A;font-size:15px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;margin-bottom:14px;display:block;font-weight:400}
+    .input-field:focus{border-color:#1E3A8A}.input-field.err{border-color:#C0392B}
+    .input-field::placeholder{color:#BBB}
+    .error-msg{font-size:12px;color:#C0392B;margin-top:-10px;margin-bottom:14px;font-family:'DM Sans',sans-serif}
+    .privacy-note{display:flex;align-items:flex-start;gap:10px;margin-top:20px}
+    .privacy-text{font-size:11px;color:#AAA;line-height:1.6;font-family:'DM Sans',sans-serif;font-weight:300}
+    .inbox-icon{font-size:52px;margin-bottom:20px}
+    .step-row{display:flex;gap:16px;margin-bottom:18px;align-items:flex-start}
+    .step-num{width:28px;height:28px;border-radius:50%;background:#EEF1FB;border:1.5px solid #1E3A8A;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#1E3A8A;flex-shrink:0;font-family:'DM Sans',sans-serif}
+    .step-text{font-size:13px;color:#666;line-height:1.6;font-family:'DM Sans',sans-serif;padding-top:4px;font-weight:400}
+    .score-row{display:flex;align-items:center;gap:32px;margin-bottom:32px}
+    .score-ring-wrap{position:relative;flex-shrink:0}
+    .score-ring-wrap svg{transform:rotate(-90deg)}
+    .score-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .score-num{font-size:32px;font-weight:700;line-height:1;font-family:'Cormorant Garamond',Georgia,serif}
+    .score-denom{font-size:9px;color:#AAA;letter-spacing:.1em;font-family:'DM Sans',sans-serif;margin-top:2px}
+    .divider{height:1px;background:#E8E6E1;margin-bottom:28px}
+    .summary-text{font-size:15px;color:#444;line-height:1.85;margin-bottom:28px;font-weight:300}
+    .domain-grid{display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
+    .domain-card{background:#F5F5F3;border:1px solid #E0DED9;border-radius:12px;padding:18px 20px}
+    .domain-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+    .domain-card-title{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.4em;text-transform:uppercase;color:#1E3A8A;margin-bottom:4px;font-weight:700}
+    .domain-card-score{font-size:13px;font-family:'DM Sans',sans-serif;color:#888;text-align:right;font-weight:400}
+    .domain-card-status{font-size:9px;font-family:'DM Sans',sans-serif;letter-spacing:.2em;text-transform:uppercase;text-align:right;margin-top:3px;font-weight:600}
+    .domain-bar-track{height:3px;background:#E8E6E1;border-radius:2px;margin-bottom:12px}
+    .domain-bar-fill{height:3px;border-radius:2px;transition:width 1s ease}
+    .domain-insight{font-size:12px;color:#666;line-height:1.75;font-family:'DM Sans',sans-serif;font-weight:400}
+    .next-card{background:#EEF1FB;border-left:4px solid #1E3A8A;border-radius:0 12px 12px 0;padding:22px;margin-bottom:32px}
+    .next-label{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.4em;text-transform:uppercase;margin-bottom:10px;font-weight:700;color:#1E3A8A}
+    .next-text{font-size:13px;color:#333;line-height:1.75;font-family:'DM Sans',sans-serif;font-weight:400}
+    .cta-card{background:#1E3A8A;border-radius:16px;padding:28px;margin-bottom:24px;text-align:center}
+    .cta-title{font-size:22px;font-weight:600;color:#FFFFFF;margin-bottom:10px;font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:-.01em}
+    .cta-body{font-size:13px;color:rgba(255,255,255,.7);line-height:1.75;font-family:'DM Sans',sans-serif;margin-bottom:22px;font-weight:300}
+    .cta-btn{display:inline-block;background:#FFFFFF;color:#1E3A8A;border:none;border-radius:50px;padding:13px 30px;font-size:12px;font-weight:700;letter-spacing:.07em;text-decoration:none;font-family:'DM Sans',sans-serif;text-transform:uppercase;transition:opacity .15s;cursor:pointer}
+    .cta-btn:hover{opacity:.9}
+    .copyright{text-align:center;margin-top:24px;font-size:10px;color:#CCC;font-family:'DM Sans',sans-serif;letter-spacing:.05em}
+    @media(max-width:600px){.score-row{gap:20px}}
+  </style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="screen-intro" class="screen active">
+  <div class="top-bar"></div>
+  <div class="inner">
+    <div class="eyebrow">BlueChip People Strategies</div>
+    <h1 class="headline">Org<br><span class="blue">Pulse</span></h1>
+    <div class="blue-rule"></div>
+    <p class="body-text">25 questions. 5 minutes. A precise read on where your organization is thriving — and where pressure is quietly building.</p>
+    <div class="card">
+      <div class="card-label">You'll discover</div>
+      <div class="fi"><div class="fd">◆</div><div class="ft">Your overall Organizational Health Score</div></div>
+      <div class="fi"><div class="fd">◆</div><div class="ft">Ratings across five critical dimensions</div></div>
+      <div class="fi"><div class="fd">◆</div><div class="ft">Where your organization is healthy — and where it's exposed</div></div>
+      <div class="fi"><div class="fd">◆</div><div class="ft">Dimension-level insights and priority actions</div></div>
+    </div>
+    <p style="font-size:13px;color:#AAA;margin-bottom:24px;line-height:1.7;font-family:'DM Sans',sans-serif;font-weight:300">Answer based on your <em style="color:#888">current reality</em> — not where you hope to be.</p>
+    <button class="btn-blue" onclick="startAssessment()">Take the Pulse →</button>
+    <div class="meta-text">5 dimensions · 25 questions · Free</div>
+  </div>
+</div>
+
+<!-- ASSESSMENT -->
+<div id="screen-assessment" class="screen">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="inner" style="padding-top:48px">
+    <div class="assess-header">
+      <div class="assess-brand">Org Pulse</div>
+      <div class="assess-count"><strong id="q-num">1</strong> / 25</div>
+    </div>
+    <div class="domain-badge" id="domain-badge">Organizational Clarity</div>
+    <div class="question-text" id="question-text"></div>
+    <div class="options" id="options-container"></div>
+    <button class="back-btn" id="back-btn" onclick="prevQuestion()" style="display:none">← Back</button>
+  </div>
+</div>
+
+<!-- GATE -->
+<div id="screen-gate" class="screen">
+  <div class="top-bar"></div>
+  <div class="inner">
+    <div class="eyebrow">BlueChip People Strategies</div>
+    <h2 class="headline" style="font-size:clamp(36px,7vw,52px)">Your Org Pulse<br><span class="blue">is ready.</span></h2>
+    <div class="blue-rule"></div>
+    <p class="body-text">Enter your details to unlock your full health report — overall score, dimension ratings, and priority insights.</p>
+    <input type="text" class="input-field" id="input-name" placeholder="Your name" />
+    <input type="text" class="input-field" id="input-org" placeholder="Organization name (optional)" />
+    <input type="text" class="input-field" id="input-role" placeholder="Your role (optional)" />
+    <input type="email" class="input-field" id="input-email" placeholder="Work email address" />
+    <div class="error-msg" id="email-error" style="display:none">Please enter a valid email address.</div>
+    <div class="error-msg" id="submit-error" style="display:none">Something went wrong. Please try again.</div>
+    <button class="btn-blue" id="gate-btn" onclick="submitEmail()">View My Results →</button>
+    <div class="privacy-note">
+      <div class="privacy-text">Your information is used only to deliver your report. BlueChip People Strategies does not sell or share your data.</div>
+    </div>
+  </div>
+</div>
+
+<!-- INBOX -->
+<div id="screen-inbox" class="screen">
+  <div class="top-bar"></div>
+  <div class="inner">
+    <div class="inbox-icon">📬</div>
+    <div class="eyebrow">Check your inbox</div>
+    <h2 class="headline" style="font-size:clamp(34px,6vw,48px)">Your results are<br><span class="blue">on the way.</span></h2>
+    <div class="blue-rule"></div>
+    <p class="body-text">We've sent your Org Pulse report to <strong id="inbox-email-display" style="color:#1A1A1A;font-weight:600"></strong>. Check your spam folder if it doesn't appear within a few minutes.</p>
+    <div class="card">
+      <div class="card-label">What's in your report</div>
+      <div class="step-row"><div class="step-num">1</div><div class="step-text">Your overall Organizational Health Score and status rating</div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-text">Scores and health ratings across all five dimensions</div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-text">Written insights and priority recommendations per dimension</div></div>
+      <div class="step-row"><div class="step-num">4</div><div class="step-text">Suggested next steps based on your results</div></div>
+    </div>
+    <button class="btn-blue" onclick="showResults()">View Results Now →</button>
+    <button class="btn-outline" onclick="restart()">Start Over</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="screen-result" class="screen">
+  <div class="top-bar"></div>
+  <div class="inner">
+    <div class="eyebrow" style="margin-top:20px">Organizational Health Report</div>
+    <div id="result-greeting" style="display:none;font-size:14px;color:#888;font-family:'DM Sans',sans-serif;margin-bottom:14px;font-weight:300"></div>
+    <div class="score-row">
+      <div class="score-ring-wrap">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="54" fill="none" stroke="#E8E6E1" stroke-width="8"/>
+          <circle id="score-arc" cx="60" cy="60" r="54" fill="none" stroke="#1E3A8A" stroke-width="8"
+            stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="339.3"
+            style="transition:stroke-dashoffset 1.2s ease"/>
+        </svg>
+        <div class="score-overlay">
+          <div class="score-num" id="score-display">--</div>
+          <div class="score-denom">/ 100</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#AAA;margin-bottom:8px;font-weight:600">Health Status</div>
+        <div id="health-status-value" style="font-size:30px;font-weight:600;color:#1E3A8A;margin-bottom:8px;font-family:'Cormorant Garamond',Georgia,serif">—</div>
+        <div id="health-status-tagline" style="font-size:13px;color:#888;font-family:'DM Sans',sans-serif;line-height:1.6;max-width:260px;font-weight:300"></div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="summary-text" id="result-summary"></div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:#1E3A8A;margin-bottom:16px;font-weight:700">Dimension Breakdown</div>
+    <div class="domain-grid" id="domain-grid"></div>
+    <div class="next-card">
+      <div class="next-label">Recommended Next Step</div>
+      <div class="next-text" id="next-text"></div>
+    </div>
+    <div class="cta-card">
+      <div class="cta-title">Want to turn these results into a plan?</div>
+      <div class="cta-body">A 30-minute debrief with Thomas turns your Org Pulse into a clear, prioritized action plan — no pitch, just insight.</div>
+      <button class="cta-btn" onclick="window.open('https://bluechip-people-strategies.com','_blank')">Book a Debrief Call →</button>
+    </div>
+    <button class="btn-outline" onclick="restart()">Retake the Pulse</button>
+    <div class="copyright">© BlueChip People Strategies · bluechip-people-strategies.com</div>
+  </div>
+</div>
+
+<script>
+const FORMSPREE='https://formspree.io/f/mzdkynkk';
+const DOMAINS=[
+  {id:'clarity',   label:'Organizational Clarity'},
+  {id:'leadership',label:'Leadership Effectiveness'},
+  {id:'people',    label:'People & Culture'},
+  {id:'execution', label:'Execution & Performance'},
+  {id:'strategy',  label:'Strategy & Prioritization'},
+];
+const QUESTIONS=[
+  {id:'c1',domain:'clarity',   text:'Our mission, vision, and values are clearly understood and consistently reflected in how decisions get made.'},
+  {id:'c2',domain:'clarity',   text:"People across the organization know where we're headed and understand why it matters."},
+  {id:'c3',domain:'clarity',   text:'Decision-making authority is clear — people know who decides what, and at what level.'},
+  {id:'c4',domain:'clarity',   text:'We communicate organizational direction in a way that actually reaches and resonates with employees at all levels.'},
+  {id:'c5',domain:'clarity',   text:'When priorities shift, we communicate the change clearly, honestly, and in a timely way.'},
+  {id:'l1',domain:'leadership',text:'Our managers were deliberately prepared for their people leadership role — not just promoted for technical performance.'},
+  {id:'l2',domain:'leadership',text:'Leaders in this organization consistently model the behaviors they expect from others.'},
+  {id:'l3',domain:'leadership',text:'There is an active, credible plan for developing the next generation of leaders from within.'},
+  {id:'l4',domain:'leadership',text:'Performance gaps at the leadership level are identified and addressed — not managed around.'},
+  {id:'l5',domain:'leadership',text:'Managers have regular, meaningful conversations with their teams about performance and development.'},
+  {id:'p1',domain:'people',    text:'Employees feel genuinely safe raising concerns, disagreeing, or speaking up without fear of consequences.'},
+  {id:'p2',domain:'people',    text:'People can see a realistic and meaningful path for growth and advancement in this organization.'},
+  {id:'p3',domain:'people',    text:'We have a clear understanding of why people leave — and we take meaningful action on what we learn.'},
+  {id:'p4',domain:'people',    text:'Recognition and appreciation are a consistent part of how we operate, not just reserved for annual events.'},
+  {id:'p5',domain:'people',    text:'The culture we describe externally is the one people actually experience day-to-day.'},
+  {id:'e1',domain:'execution', text:'Teams operate with clear goals and defined, measurable outcomes that people understand and own.'},
+  {id:'e2',domain:'execution', text:'Underperformance is addressed consistently, fairly, and without unnecessary delay.'},
+  {id:'e3',domain:'execution', text:"Cross-functional collaboration is effective and doesn't regularly break down at the seams."},
+  {id:'e4',domain:'execution', text:'Employees understand how their day-to-day work connects to broader organizational priorities.'},
+  {id:'e5',domain:'execution', text:'We follow through on commitments — internally and to the people we serve.'},
+  {id:'s1',domain:'strategy',  text:'Our organization has a clear strategy that people beyond the executive team can articulate.'},
+  {id:'s2',domain:'strategy',  text:"We make deliberate choices about what not to pursue — we're not trying to do everything at once."},
+  {id:'s3',domain:'strategy',  text:'Resources — time, budget, and people — are allocated in a way that actually reflects our stated priorities.'},
+  {id:'s4',domain:'strategy',  text:'Strategic decisions are made with sufficient information rather than primarily by intuition or urgency.'},
+  {id:'s5',domain:'strategy',  text:"We regularly review our strategy and adjust based on what we're learning from results."},
+];
+const LABELS=['Strongly Disagree','Disagree','Neutral','Agree','Strongly Agree'];
+const DOMAIN_INSIGHTS={
+  clarity:{
+    healthy:"Your organizational direction is clear and landing at all levels. People understand where you're going, decisions get made with authority, and communication actually reaches the people who need it.",
+    developing:"Direction exists at the top but isn't fully translating day-to-day. Gaps in how communication lands or how decisions get made are creating friction that slows you down.",
+    risk:"Clarity is a critical gap. Without shared direction, decision-making authority, and honest communication, misalignment becomes the operating norm — and it compounds quietly.",
+  },
+  leadership:{
+    healthy:"You've built real leadership capacity. Managers are equipped, accountable, and actively growing others. That's a differentiator that shows up directly in performance and retention.",
+    developing:"Leadership is functional but uneven. Some managers are strong; others are creating quiet damage. Without a deliberate development plan, that gap tends to widen.",
+    risk:"Leadership capability is a significant vulnerability. When managers aren't developed for their people role, cultural and performance problems compound — and the cost shows up in ways that are hard to reverse.",
+  },
+  people:{
+    healthy:"Your people environment is genuinely healthy. Employees feel safe, can see a future here, and experience the culture you describe externally. That's harder to build than most organizations realize.",
+    developing:"The foundation is there but it's uneven. Some people feel seen and supported; others don't. That inconsistency is its own retention and culture risk.",
+    risk:"There are meaningful gaps in how people experience this organization. Low safety, limited growth visibility, or a disconnect between stated and lived culture are creating exposure that doesn't surface until it's costly.",
+  },
+  execution:{
+    healthy:"Your execution culture is working. Teams know what they're accountable for, gaps get addressed instead of avoided, and follow-through is a norm rather than an exception.",
+    developing:"Performance infrastructure exists but isn't fully embedded. Inconsistency in goals, accountability, or collaboration is creating friction and quiet resentment across teams.",
+    risk:"Accountability gaps are showing up across the organization. Without clear goals, consistent follow-through, and effective collaboration, execution suffers — and your best people eventually stop trying.",
+  },
+  strategy:{
+    healthy:"Your organization operates with genuine strategic clarity. You know what you're doing, what you're not doing, and why. That discipline shows up in how resources get allocated and decisions get made.",
+    developing:"Strategy exists at the leadership level but isn't fully operationalized. Misalignment between stated priorities and how resources are actually deployed is creating confusion and inefficiency.",
+    risk:"Strategic clarity is a critical gap. Without a clear, communicated strategy and the discipline to prioritize, organizations default to reacting — spreading resources thin and losing ground on what actually matters.",
+  },
+};
+const HEALTH_LEVELS=[
+  {min:75,max:100,label:'Healthy',tagline:"Your organization is functioning well across most dimensions.",
+    summary:"Your scores indicate a generally healthy organization. You've built real capacity across the dimensions that matter most. The opportunity now is identifying which gaps remain and addressing them before they become friction points.",
+    next:"Dig into your lowest-scoring dimension first. A healthy organization stays healthy through honest visibility — schedule a leadership team review of these results within the next 30 days."},
+  {min:50,max:74,label:'Developing',tagline:"Some dimensions are working well. Others need deliberate attention before they compound.",
+    summary:"Your results show meaningful strengths alongside real gaps. The risk isn't any single dimension — it's the combination of unaddressed areas that tends to create compounding drag on performance, retention, and culture.",
+    next:"Prioritize your two lowest-scoring dimensions. These are where quiet pressure is building fastest. A focused 90-day plan on one dimension at a time will produce more impact than trying to fix everything at once."},
+  {min:0,max:49,label:'At Risk',tagline:"Multiple dimensions require focused attention to prevent compounding exposure.",
+    summary:"Your scores indicate that multiple foundational dimensions are under pressure. This doesn't mean the organization is broken — but the gaps are real, interconnected, and likely to compound without deliberate intervention.",
+    next:"Start with organizational clarity and leadership. These two dimensions underpin everything else. Without clear direction and capable people managers, efforts in other areas tend not to stick."},
+];
+const STATUS_COLORS={healthy:'#2D7A4F',developing:'#B8650A',risk:'#C0392B'};
+let current=0,answers={},finalScore=null,domainScores={},userName='';
+
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+id).classList.add('active');window.scrollTo(0,0);}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const p=new URLSearchParams(window.location.search);
+  const sc=parseInt(p.get('score'),10),nm=p.get('name')||'',ds=p.get('domains')||'';
+  if(!isNaN(sc)&&sc>=0&&sc<=100){finalScore=sc;userName=decodeURIComponent(nm);if(ds){try{domainScores=JSON.parse(decodeURIComponent(ds));}catch(e){}}showResults();}
+});
+
+function startAssessment(){current=0;answers={};renderQuestion();showScreen('assessment');}
+
+function renderQuestion(){
+  const q=QUESTIONS[current];
+  document.getElementById('progress-fill').style.width=Math.round((current/QUESTIONS.length)*100)+'%';
+  document.getElementById('q-num').textContent=current+1;
+  document.getElementById('domain-badge').textContent=DOMAINS.find(d=>d.id===q.domain).label;
+  document.getElementById('question-text').textContent=q.text;
+  document.getElementById('back-btn').style.display=current>0?'block':'none';
+  const c=document.getElementById('options-container');c.innerHTML='';
+  LABELS.forEach((label,i)=>{
+    const val=i+1,btn=document.createElement('button');
+    btn.className='option-btn'+(answers[q.id]===val?' selected':'');
+    btn.innerHTML='<div class="radio-circle"><div class="radio-inner"></div></div><span class="option-label">'+label+'</span>';
+    btn.onclick=()=>selectAnswer(val);c.appendChild(btn);
+  });
+}
+
+function selectAnswer(val){
+  answers[QUESTIONS[current].id]=val;renderQuestion();
+  setTimeout(()=>{
+    document.getElementById('question-text').classList.add('fade-out');
+    setTimeout(()=>{
+      if(current<QUESTIONS.length-1){current++;renderQuestion();document.getElementById('question-text').classList.remove('fade-out');}
+      else{calcScores();showScreen('gate');}
+    },220);
+  },300);
+}
+
+function prevQuestion(){if(current>0){current--;renderQuestion();}}
+
+function calcScores(){
+  domainScores={};
+  DOMAINS.forEach(d=>{
+    const qs=QUESTIONS.filter(q=>q.domain===d.id);
+    domainScores[d.id]=qs.reduce((sum,q)=>sum+(answers[q.id]||3),0);
+  });
+  finalScore=Math.round((Object.values(domainScores).reduce((a,b)=>a+b,0)/(QUESTIONS.length*5))*100);
+}
+
+async function submitEmail(){
+  const email=document.getElementById('input-email').value.trim();
+  const name=document.getElementById('input-name').value.trim();
+  const org=document.getElementById('input-org').value.trim();
+  const role=document.getElementById('input-role').value.trim();
+  const errEl=document.getElementById('email-error'),subErr=document.getElementById('submit-error'),btn=document.getElementById('gate-btn');
+  errEl.style.display='none';subErr.style.display='none';
+  document.getElementById('input-email').classList.remove('err');
+  if(!email||!email.includes('@')||!email.includes('.')){errEl.style.display='block';document.getElementById('input-email').classList.add('err');return;}
+  btn.textContent='Sending...';btn.disabled=true;
+  const resultsURL=window.location.origin+window.location.pathname+'?score='+finalScore+'&name='+encodeURIComponent(name||'')+'&domains='+encodeURIComponent(JSON.stringify(domainScores));
+  try{
+    const res=await fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({name:name||'Friend',email,org,role,score:finalScore,domains:domainScores,_subject:'Your Org Pulse Results — BlueChip People Strategies',_next:resultsURL})});
+    if(res.ok){userName=name;document.getElementById('inbox-email-display').textContent=email;showScreen('inbox');}
+    else throw new Error();
+  }catch(e){subErr.style.display='block';btn.textContent='View My Results →';btn.disabled=false;}
+}
+
+function getDomainStatus(score){
+  const p=score/25;
+  if(p>=0.75)return{label:'Healthy',   key:'healthy',   color:STATUS_COLORS.healthy};
+  if(p>=0.5) return{label:'Developing',key:'developing', color:STATUS_COLORS.developing};
+  return            {label:'At Risk',  key:'risk',       color:STATUS_COLORS.risk};
+}
+
+function showResults(){
+  const level=HEALTH_LEVELS.find(l=>finalScore>=l.min&&finalScore<=l.max)||HEALTH_LEVELS[2];
+  const statusColor=finalScore>=75?STATUS_COLORS.healthy:finalScore>=50?STATUS_COLORS.developing:STATUS_COLORS.risk;
+  const circ=2*Math.PI*54;
+  const gr=document.getElementById('result-greeting');
+  if(userName){gr.textContent='Here are your results, '+userName.split(' ')[0]+'.';gr.style.display='block';}
+  document.getElementById('score-display').textContent=finalScore;
+  document.getElementById('score-display').style.color=statusColor;
+  const arc=document.getElementById('score-arc');arc.style.stroke=statusColor;
+  setTimeout(()=>{arc.style.strokeDashoffset=circ-(finalScore/100)*circ;},100);
+  document.getElementById('health-status-value').textContent=level.label;
+  document.getElementById('health-status-value').style.color=statusColor;
+  document.getElementById('health-status-tagline').textContent=level.tagline;
+  document.getElementById('result-summary').textContent=level.summary;
+  document.getElementById('next-text').textContent=level.next;
+  const grid=document.getElementById('domain-grid');grid.innerHTML='';
+  DOMAINS.forEach(d=>{
+    const score=domainScores[d.id]||0,pct=Math.round((score/25)*100),st=getDomainStatus(score),ins=DOMAIN_INSIGHTS[d.id][st.key];
+    const card=document.createElement('div');card.className='domain-card';
+    card.innerHTML=`<div class="domain-card-header"><div><div class="domain-card-title">${d.label}</div></div><div><div class="domain-card-score">${score}<span style="font-size:10px;color:#CCC"> / 25</span></div><div class="domain-card-status" style="color:${st.color}">${st.label}</div></div></div><div class="domain-bar-track"><div class="domain-bar-fill" style="width:0%;background:${st.color}" data-pct="${pct}"></div></div><div class="domain-insight">${ins}</div>`;
+    grid.appendChild(card);
+  });
+  setTimeout(()=>{document.querySelectorAll('.domain-bar-fill').forEach(b=>{b.style.width=b.dataset.pct+'%';});},150);
+  showScreen('result');
+}
+
+function restart(){
+  current=0;answers={};finalScore=null;domainScores={};userName='';
+  ['input-name','input-org','input-role','input-email'].forEach(id=>document.getElementById(id).value='');
+  window.history.replaceState({},'',window.location.pathname);
+  showScreen('intro');
+}
+</script>
+</body>
+</html>
