@@ -8,9 +8,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{width:100%;min-height:100vh}
     body{background:#FFFFFF;color:#1A1A1A;font-family:'DM Sans',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
-    .screen{display:none;min-height:100vh}.screen.active{display:block}
-    .inner{max-width:580px;margin:0 auto;padding:64px 28px}
+    .sqs-block-code,.sqs-block,.sqs-col-12,.sqs-row,.sqs-layout,.sqs-block-content{width:100%!important;max-width:100%!important;padding:0!important;margin:0!important}
+    .screen{display:none;width:100%}.screen.active{display:block}
+    .inner{width:min(90%,680px);margin:0 auto;padding:5vw 4vw}
     .top-bar{position:fixed;top:0;left:0;right:0;height:5px;background:#1E3A8A;z-index:100}
     .eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.4em;color:#1E3A8A;text-transform:uppercase;margin-bottom:14px;font-weight:600}
     .headline{font-size:clamp(48px,9vw,68px);font-weight:600;line-height:1.0;margin-bottom:10px;color:#1A1A1A;font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:-.02em}
@@ -131,7 +133,7 @@
     <div class="eyebrow">BlueChip People Strategies</div>
     <h2 class="headline" style="font-size:clamp(36px,7vw,52px)">Your Org Pulse<br><span class="blue">is ready.</span></h2>
     <div class="blue-rule"></div>
-    <p class="body-text">Enter your details to unlock your full health report — overall score, dimension ratings, and priority insights.</p>
+    <p class="body-text">Enter your details to unlock your full health report — overall score, dimension ratings, and priority insights. Results display instantly.</p>
     <input type="text" class="input-field" id="input-name" placeholder="Your name" />
     <input type="text" class="input-field" id="input-org" placeholder="Organization name (optional)" />
     <input type="text" class="input-field" id="input-role" placeholder="Your role (optional)" />
@@ -344,14 +346,13 @@ async function submitEmail(){
   errEl.style.display='none';subErr.style.display='none';
   document.getElementById('input-email').classList.remove('err');
   if(!email||!email.includes('@')||!email.includes('.')){errEl.style.display='block';document.getElementById('input-email').classList.add('err');return;}
-  btn.textContent='Sending...';btn.disabled=true;
-  const resultsURL=window.location.origin+window.location.pathname+'?score='+finalScore+'&name='+encodeURIComponent(name||'')+'&domains='+encodeURIComponent(JSON.stringify(domainScores));
+  btn.textContent='Loading...';btn.disabled=true;
   try{
-    const res=await fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({name:name||'Friend',email,org,role,score:finalScore,domains:domainScores,_subject:'Your Org Pulse Results — BlueChip People Strategies',_next:resultsURL})});
-    if(res.ok){userName=name;document.getElementById('inbox-email-display').textContent=email;showScreen('inbox');}
-    else throw new Error();
-  }catch(e){subErr.style.display='block';btn.textContent='View My Results →';btn.disabled=false;}
+    await fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({name:name||'Friend',email,org,role,score:finalScore,domains:domainScores,_subject:'New Org Pulse Submission — BlueChip People Strategies'})});
+  }catch(e){}
+  userName=name;
+  showResults();
 }
 
 function getDomainStatus(score){
