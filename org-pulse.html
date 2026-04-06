@@ -347,9 +347,34 @@ async function submitEmail(){
   document.getElementById('input-email').classList.remove('err');
   if(!email||!email.includes('@')||!email.includes('.')){errEl.style.display='block';document.getElementById('input-email').classList.add('err');return;}
   btn.textContent='Loading...';btn.disabled=true;
+  const level=HEALTH_LEVELS.find(l=>finalScore>=l.min&&finalScore<=l.max)||HEALTH_LEVELS[2];
+  const breakdown=DOMAINS.map(d=>{
+    const s=domainScores[d.id]||0;
+    const st=getDomainStatus(s);
+    const ins=DOMAIN_INSIGHTS[d.id][st.key];
+    return d.label+': '+s+'/25 — '+st.label+'\n'+ins;
+  }).join('\n\n');
+  const message=
+    '=== ORG PULSE RESULTS ===\n\n'+
+    'Name: '+(name||'Not provided')+'\n'+
+    'Email: '+email+'\n'+
+    'Organization: '+(org||'Not provided')+'\n'+
+    'Role: '+(role||'Not provided')+'\n\n'+
+    'OVERALL SCORE: '+finalScore+'/100 — '+level.label+'\n'+
+    level.tagline+'\n\n'+
+    '=== DIMENSION BREAKDOWN ===\n\n'+
+    breakdown+'\n\n'+
+    '=== RECOMMENDED NEXT STEP ===\n\n'+
+    level.next;
   try{
     await fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({name:name||'Friend',email,org,role,score:finalScore,domains:domainScores,_subject:'New Org Pulse Submission — BlueChip People Strategies'})});
+      body:JSON.stringify({
+        name:name||'Friend',email,org,role,
+        overall_score:finalScore+'/100',
+        overall_status:level.label,
+        message,
+        _subject:'Org Pulse: '+finalScore+'/100 ('+level.label+') — '+(name||email),
+      })});
   }catch(e){}
   userName=name;
   showResults();
