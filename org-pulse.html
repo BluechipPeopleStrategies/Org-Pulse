@@ -142,29 +142,8 @@
     <div class="error-msg" id="submit-error" style="display:none">Something went wrong. Please try again.</div>
     <button class="btn-blue" id="gate-btn" onclick="submitEmail()">View My Results →</button>
     <div class="privacy-note">
-      <div class="privacy-text">Your information is used only to deliver your report. BlueChip People Strategies does not sell or share your data.</div>
+      <div class="privacy-text">Your information is kept private. BlueChip People Strategies does not sell or share your data.</div>
     </div>
-  </div>
-</div>
-
-<!-- INBOX -->
-<div id="screen-inbox" class="screen">
-  <div class="top-bar"></div>
-  <div class="inner">
-    <div class="inbox-icon">📬</div>
-    <div class="eyebrow">Check your inbox</div>
-    <h2 class="headline" style="font-size:clamp(34px,6vw,48px)">Your results are<br><span class="blue">on the way.</span></h2>
-    <div class="blue-rule"></div>
-    <p class="body-text">We've sent your Org Pulse report to <strong id="inbox-email-display" style="color:#1A1A1A;font-weight:600"></strong>. Check your spam folder if it doesn't appear within a few minutes.</p>
-    <div class="card">
-      <div class="card-label">What's in your report</div>
-      <div class="step-row"><div class="step-num">1</div><div class="step-text">Your overall Organizational Health Score and status rating</div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-text">Scores and health ratings across all five dimensions</div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-text">Written insights and priority recommendations per dimension</div></div>
-      <div class="step-row"><div class="step-num">4</div><div class="step-text">Suggested next steps based on your results</div></div>
-    </div>
-    <button class="btn-blue" onclick="showResults()">View Results Now →</button>
-    <button class="btn-outline" onclick="restart()">Start Over</button>
   </div>
 </div>
 
@@ -348,33 +327,27 @@ async function submitEmail(){
   if(!email||!email.includes('@')||!email.includes('.')){errEl.style.display='block';document.getElementById('input-email').classList.add('err');return;}
   btn.textContent='Loading...';btn.disabled=true;
   const level=HEALTH_LEVELS.find(l=>finalScore>=l.min&&finalScore<=l.max)||HEALTH_LEVELS[2];
-  const breakdown=DOMAINS.map(d=>{
+  const payload={
+    _subject:'Org Pulse: '+finalScore+'/100 ('+level.label+') — '+(name||email),
+    '01_name': name||'Not provided',
+    '02_email': email,
+    '03_organization': org||'Not provided',
+    '04_role': role||'Not provided',
+    '05_overall_score': finalScore+' / 100',
+    '06_overall_status': level.label,
+    '07_overall_summary': level.tagline+' — '+level.summary,
+  };
+  DOMAINS.forEach((d,i)=>{
     const s=domainScores[d.id]||0;
     const st=getDomainStatus(s);
     const ins=DOMAIN_INSIGHTS[d.id][st.key];
-    return d.label+': '+s+'/25 — '+st.label+'\n'+ins;
-  }).join('\n\n');
-  const message=
-    '=== ORG PULSE RESULTS ===\n\n'+
-    'Name: '+(name||'Not provided')+'\n'+
-    'Email: '+email+'\n'+
-    'Organization: '+(org||'Not provided')+'\n'+
-    'Role: '+(role||'Not provided')+'\n\n'+
-    'OVERALL SCORE: '+finalScore+'/100 — '+level.label+'\n'+
-    level.tagline+'\n\n'+
-    '=== DIMENSION BREAKDOWN ===\n\n'+
-    breakdown+'\n\n'+
-    '=== RECOMMENDED NEXT STEP ===\n\n'+
-    level.next;
+    const num=String(8+i).padStart(2,'0');
+    payload[num+'_'+d.id]=s+'/25 — '+st.label+'\n'+ins;
+  });
+  payload['14_recommended_next_step']=level.next;
   try{
     await fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({
-        name:name||'Friend',email,org,role,
-        overall_score:finalScore+'/100',
-        overall_status:level.label,
-        message,
-        _subject:'Org Pulse: '+finalScore+'/100 ('+level.label+') — '+(name||email),
-      })});
+      body:JSON.stringify(payload)});
   }catch(e){}
   userName=name;
   showResults();
