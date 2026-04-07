@@ -81,6 +81,10 @@
     .cta-btn{display:inline-block;background:#FFFFFF;color:#1E3A8A;border:none;border-radius:50px;padding:13px 30px;font-size:12px;font-weight:700;letter-spacing:.07em;text-decoration:none;font-family:'DM Sans',sans-serif;text-transform:uppercase;transition:opacity .15s;cursor:pointer}
     .cta-btn:hover{opacity:.9}
     .copyright{text-align:center;margin-top:24px;font-size:10px;color:#CCC;font-family:'DM Sans',sans-serif;letter-spacing:.05em}
+    .disclaimer-short{font-size:10px;color:#BBB;line-height:1.65;font-family:'DM Sans',sans-serif;font-weight:300;text-align:center;margin-top:14px;padding:0 4px}
+    .disclaimer-block{background:#F5F5F3;border:1px solid #E0DED9;border-radius:10px;padding:16px 18px;margin-top:20px;margin-bottom:4px}
+    .disclaimer-block-label{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.4em;text-transform:uppercase;color:#CCC;margin-bottom:8px;font-weight:600}
+    .disclaimer-block-text{font-size:11px;color:#AAA;line-height:1.7;font-family:'DM Sans',sans-serif;font-weight:300}
     @media(max-width:600px){.score-row{gap:20px}}
   </style>
 </head>
@@ -104,6 +108,7 @@
     <p style="font-size:13px;color:#AAA;margin-bottom:24px;line-height:1.7;font-family:'DM Sans',sans-serif;font-weight:300">Answer based on your <em style="color:#888">current reality</em> — not where you hope to be.</p>
     <button class="btn-blue" onclick="startAssessment()">Take the Pulse →</button>
     <div class="meta-text">5 dimensions · 25 questions · Free</div>
+    <div class="disclaimer-short">This assessment is for informational purposes only. Results do not constitute HR, legal, or professional advice of any kind. Completing this tool does not create a professional-client relationship with BlueChip People Strategies.</div>
   </div>
 </div>
 
@@ -190,6 +195,10 @@
       <a href="https://bluechippeople.gumroad.com/l/cpacwom" target="_blank" rel="noreferrer" style="display:inline-block;background:#1E3A8A;color:#FFFFFF;border-radius:50px;padding:12px 24px;font-size:12px;font-weight:700;letter-spacing:.06em;text-decoration:none;font-family:'DM Sans',sans-serif;text-transform:uppercase;white-space:nowrap;flex-shrink:0">Get the Playbook — $19</a>
     </div>
     <button class="btn-outline" onclick="restart()">Retake the Pulse</button>
+    <div class="disclaimer-block">
+      <div class="disclaimer-block-label">Disclaimer</div>
+      <div class="disclaimer-block-text">This assessment is for informational purposes only. Results are generated from self-reported responses and do not constitute HR, legal, or professional advice of any kind. The health score, dimension ratings, and insights produced by this tool are not a formal audit, professional evaluation, or binding opinion about your organization. No professional-client relationship is created between you and BlueChip People Strategies by completing this assessment. BlueChip People Strategies provides HR and leadership advisory services only and does not provide legal advice or legal representation. Results should not be used as the sole basis for significant organizational decisions without independent professional review.</div>
+    </div>
     <div class="copyright">© BlueChip People Strategies · bluechip-people-strategies.com</div>
   </div>
 </div>
